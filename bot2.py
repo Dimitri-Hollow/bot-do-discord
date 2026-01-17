@@ -13,6 +13,10 @@ async def add(ctx, left: int, right: int):
     """Adds two numbers together."""
     await ctx.send(left + right)
 
+@bot.command()
+async def mult(ctx, left: int, right: int):
+    """Multiplies two numbers together."""
+    await ctx.send(left * right)
 
 @bot.command()
 async def roll(ctx, dice: str):
@@ -27,15 +31,21 @@ async def roll(ctx, dice: str):
     await ctx.send(result)
 
 @bot.command()
-async def add_roll(ctx, dice: str):
+async def add_roll(ctx, *dices: str):
     """Rolls dices and adds the results in NdN format."""
     try:
-        rolls, limit = map(int, dice.split('d'))
+        for i in range(len(dices)):
+            rolls, limit = map(int, dices[i].split('d'))
+            result = sum(int(random.randint(1, limit)) for r in range(rolls))
     except Exception:
         await ctx.send('Format has to be in NdN!')
         return
 
-    result = sum(int(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
 
-bot.run('MTQ1NzAxMDczMzMyNDgyODkxMA.G1qWd2.mB3_VcM4pV7l9RgkKGADmwu2yI1WnuUiwGrmDU')
+@bot.command()
+async def choose(ctx, *choices: str):
+    """Chooses between multiple choices."""
+    await ctx.send(random.choice(choices))
+
+bot.run('Token')
